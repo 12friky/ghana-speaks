@@ -16,10 +16,16 @@ function AdminPage({ onNavigate, poll, onSavePoll, onLogout, saveError }) {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    setQuestion(safePoll.question)
-    setStatus(safePoll.status)
-    setOptions(safePoll.options)
-  }, [safePoll])
+    if (safePoll?.question !== undefined) {
+      setQuestion(safePoll.question)
+    }
+    if (safePoll?.status) {
+      setStatus(safePoll.status)
+    }
+    if (Array.isArray(safePoll?.options)) {
+      setOptions(safePoll.options)
+    }
+  }, [safePoll?.question, safePoll?.status, safePoll?.options])
 
   const handleAddOption = () => {
     if (!draftOption.label.trim()) {
