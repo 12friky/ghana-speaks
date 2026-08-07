@@ -1,0 +1,266 @@
+.app-shell {
+  min-height: 100vh;
+  background: #f7f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #111827;
+}
+
+.navbar {
+  background: #0b1220;
+  color: #fff;
+  padding: 14px 0;
+}
+
+.navbar-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-flag {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.flag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.flag-red { background: #e11d1d; }
+.flag-gold { background: #f2b90c; }
+.flag-green { background: #1e8f4e; }
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+}
+
+.brand-accent {
+  color: #f2b90c;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: #9aa4b2;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-link {
+  color: #cbd3dd;
+  text-decoration: none;
+  font-size: 14px;
+  padding-bottom: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-link.active {
+  color: #f2b90c;
+  border-bottom: 2px solid #f2b90c;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.share-btn {
+  background: transparent;
+  border: 1px solid #3a4454;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-open .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-open .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+  padding: 0 24px;
+}
+
+.mobile-menu-open {
+  max-height: 260px;
+  opacity: 1;
+  padding: 10px 24px 18px;
+}
+
+.mobile-link {
+  color: #cbd3dd;
+  text-decoration: none;
+  font-size: 14.5px;
+  padding: 12px 0;
+  border-bottom: 1px solid #1c2534;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-link:last-child {
+  border-bottom: none;
+}
+
+.mobile-link.active {
+  color: #f2b90c;
+  font-weight: 600;
+}
+
+.page-heading {
+  text-align: center;
+  padding: 40px 24px 8px;
+}
+
+.page-heading h1 {
+  font-size: 30px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: #0b1220;
+}
+
+.page-heading p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 15px;
+}
+
+.footer {
+  background: #0b1220;
+  color: #fff;
+  margin-top: 20px;
+}
+
+.footer-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-title {
+  color: #fff;
+}
+
+.footer-sub {
+  color: #9aa4b2;
+}
+
+.footer-copy {
+  font-size: 12.5px;
+  color: #9aa4b2;
+}
+
+.footer-links {
+  display: flex;
+  gap: 10px;
+  font-size: 12.5px;
+}
+
+.footer-links a {
+  color: #cbd3dd;
+  text-decoration: none;
+}
+
+@media (max-width: 800px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .share-btn {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+}

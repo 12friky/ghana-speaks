@@ -1,0 +1,162 @@
+.admin-layout {
+  max-width: 1000px;
+  margin: 24px auto 40px;
+  padding: 0 24px;
+}
+
+.admin-card {
+  border-radius: 16px;
+}
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admin-card-header h3 {
+  margin: 0 0 6px;
+  color: #111827;
+}
+
+.admin-card-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.status-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.status-pill.active {
+  background: #eafaf0;
+  color: #15803d;
+}
+
+.status-pill.closed {
+  background: #fdecec;
+  color: #b91c1c;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.field textarea,
+.field input,
+.field select {
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  background: #fff;
+}
+
+.field.compact {
+  flex: 1;
+}
+
+.admin-option-builder {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  background: #f9fafb;
+}
+
+.admin-option-builder h4 {
+  margin: 0 0 10px;
+}
+
+.admin-option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.admin-option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-error {
+  margin: 0;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.admin-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.admin-option-item p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.secondary-btn,
+.ghost-btn {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #111827;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background: #2554d1;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.admin-message {
+  margin: 0;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .admin-option-grid {
+    grid-template-columns: 1fr;
+  }
+}

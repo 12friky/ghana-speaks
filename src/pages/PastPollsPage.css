@@ -1,0 +1,28 @@
+.page-section {
+  max-width: 1000px;
+  margin: 24px auto 40px;
+  padding: 0 24px;
+}
+
+.card-list {
+  display: grid;
+  gap: 16px;
+}
+
+.card-list .card {
+  border-radius: 12px;
+}
+
+.card-list h3 {
+  margin: 0 0 8px;
+  color: #111827;
+}
+
+.card-list p {
+  margin: 0 0 8px;
+  color: #6b7280;
+}
+
+.card-list strong {
+  color: #2554d1;
+}

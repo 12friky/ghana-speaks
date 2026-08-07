@@ -1,0 +1,19 @@
+.page-section {
+  max-width: 1000px;
+  margin: 24px auto 40px;
+  padding: 0 24px;
+}
+
+.page-section .card {
+  border-radius: 12px;
+}
+
+.page-section h3 {
+  margin-top: 0;
+  color: #111827;
+}
+
+.page-section p {
+  color: #6b7280;
+  line-height: 1.6;
+}
