@@ -75,7 +75,7 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
       maxVotes,
       options: poll.options.map((option, index) => ({
         ...option,
-        color: ['#22c55e', '#eab308', '#ef4444', '#9ca3af'][index % 4],
+        color: ['#EA2A2A', '#eab308', '#ef4444', '#9ca3af'][index % 4],
         bg: ['#eafaf0', '#fdf6e3', '#fdecec', '#f3f4f6'][index % 4],
         pct:
           totalVotes === 0
