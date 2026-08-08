@@ -23,13 +23,46 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
   })
   const [now, setNow] = useState(Date.now())
 
-  const pollId = poll?._id || poll?.id || 'current-poll'
+  const pollId = poll?.pollId || poll?._id || poll?.id || 'current-poll'
   const pollClosed = poll?.status !== 'active'
 
   useEffect(() => {
-    const alreadyVoted = Boolean(localStorage.getItem(`vote-${pollId}`))
-    queueMicrotask(() => setVoted(alreadyVoted))
-  }, [pollId])
+    let ignore = false
+
+    const checkVoteStatus = async () => {
+      if (!pollId || pollId === 'current-poll' || !voterId) {
+        return
+      }
+
+      try {
+        const response = await api.get(`/api/polls/${pollId}/vote-status`, {
+          params: { voterId },
+        })
+
+        if (!ignore) {
+          const hasVoted = Boolean(response.data?.hasVoted)
+          setVoted(hasVoted)
+
+          if (hasVoted) {
+            localStorage.setItem(`vote-${pollId}`, 'true')
+          } else {
+            localStorage.removeItem(`vote-${pollId}`)
+          }
+        }
+      } catch (error) {
+        if (!ignore) {
+          const alreadyVoted = Boolean(localStorage.getItem(`vote-${pollId}`))
+          setVoted(alreadyVoted)
+        }
+      }
+    }
+
+    checkVoteStatus()
+
+    return () => {
+      ignore = true
+    }
+  }, [pollId, voterId])
 
   const pollCreatedAt = poll?.createdAt || null
 
@@ -103,7 +136,7 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
     setIsSubmittingVote(true)
 
     try {
-      await api.post(`/api/polls/${pollId}/vote`, {
+      const response = await api.post(`/api/polls/${pollId}/vote`, {
         optionId: selected,
         voterId,
       })
@@ -111,12 +144,18 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
       localStorage.setItem(`vote-${pollId}`, 'true')
       setVoted(true)
       setShowSuccessModal(true)
-      setMessage('Vote submitted successfully.')
+      setMessage(response?.data?.message || 'Vote submitted successfully.')
       refreshPoll?.()
     } catch (error) {
-      setMessage(
-        error?.response?.data?.message || 'Unable to submit vote. Please try again.'
-      )
+      if (error?.response?.status === 409) {
+        localStorage.setItem(`vote-${pollId}`, 'true')
+        setVoted(true)
+        setMessage('You have already voted in this poll.')
+      } else {
+        setMessage(
+          error?.response?.data?.message || 'Unable to submit vote. Please try again.'
+        )
+      }
     } finally {
       setIsSubmittingVote(false)
     }
