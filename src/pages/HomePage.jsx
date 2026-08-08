@@ -7,7 +7,10 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
   const [selected, setSelected] = useState(null)
   const [voted, setVoted] = useState(false)
   const [message, setMessage] = useState('')
+  const [shareMessage, setShareMessage] = useState('')
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [isSubmittingVote, setIsSubmittingVote] = useState(false)
+  const [isSharing, setIsSharing] = useState(false)
   const [voterId] = useState(() => {
     let stored = localStorage.getItem('voter-id')
 
@@ -97,6 +100,8 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
       return
     }
 
+    setIsSubmittingVote(true)
+
     try {
       await api.post(`/api/polls/${pollId}/vote`, {
         optionId: selected,
@@ -112,6 +117,36 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
       setMessage(
         error?.response?.data?.message || 'Unable to submit vote. Please try again.'
       )
+    } finally {
+      setIsSubmittingVote(false)
+    }
+  }
+
+  const handleShare = async () => {
+    try {
+      setIsSharing(true)
+      setShareMessage('')
+
+      const shareUrl = window.location.href
+
+      if (navigator.share) {
+        await navigator.share({
+          title: 'GhanaSpeaks Poll',
+          text: poll?.question || 'Check out this poll on GhanaSpeaks',
+          url: shareUrl,
+        })
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl)
+        setShareMessage('Poll link copied to clipboard.')
+      } else {
+        window.prompt('Copy this poll link:', shareUrl)
+      }
+    } catch (error) {
+      if (error?.name !== 'AbortError') {
+        setShareMessage('Unable to share the poll right now.')
+      }
+    } finally {
+      setIsSharing(false)
     }
   }
 
@@ -121,6 +156,7 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
       onNavigate={onNavigate}
       title="This Week's National Poll 🇬🇭"
       subtitle="Your voice matters. Together, we shape our future."
+      onShare={handleShare}
     >
       <section className="content-grid">
         <div className="main-col">
@@ -163,11 +199,17 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
 
             <button
               className="submit-btn"
-              disabled={!selected || voted || pollClosed}
+              disabled={!selected || voted || pollClosed || isSubmittingVote}
               onClick={handleVote}
             >
               <span className="submit-icon">📊</span>
-              {pollClosed ? 'Poll Closed' : voted ? 'Vote Submitted' : 'Submit My Vote'}
+              {isSubmittingVote
+                ? 'Submitting...'
+                : pollClosed
+                  ? 'Poll Closed'
+                  : voted
+                    ? 'Vote Submitted'
+                    : 'Submit My Vote'}
             </button>
             {message ? <p className="info-text">{message}</p> : null}
 
@@ -262,9 +304,10 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
               <span>📣</span> Make Your Voice Heard
             </div>
             <p>Share this poll with your friends and family and let's build a better Ghana together.</p>
-            <button className="share-outline-btn" type="button">
-              <span>↗</span> Share Poll
+            <button className="share-outline-btn" type="button" onClick={handleShare} disabled={isSharing}>
+              <span>↗</span> {isSharing ? 'Sharing...' : 'Share Poll'}
             </button>
+            {shareMessage ? <p className="share-feedback">{shareMessage}</p> : null}
           </div>
         </div>
       </section>

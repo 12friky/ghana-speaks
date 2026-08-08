@@ -422,6 +422,17 @@
   gap: 6px;
 }
 
+.share-outline-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.share-feedback {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #2563eb;
+}
+
 .ad-banner {
   max-width: 1000px;
   margin: 20px auto 0;

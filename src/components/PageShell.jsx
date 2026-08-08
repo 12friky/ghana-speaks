@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './PageShell.css'
 
-function PageShell({ activePage, onNavigate, title, subtitle, children }) {
+function PageShell({ activePage, onNavigate, title, subtitle, children, onShare }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const navItems = [
@@ -45,7 +45,7 @@ function PageShell({ activePage, onNavigate, title, subtitle, children }) {
 
           <div className="navbar-actions">
             <button className="icon-btn" aria-label="Toggle theme">☀️</button>
-            <button className="share-btn" type="button">
+            <button className="share-btn" type="button" onClick={onShare}>
               <span>↗</span> Share Poll
             </button>
             <button

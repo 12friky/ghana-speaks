@@ -16,6 +16,7 @@ function App() {
   const [loginError, setLoginError] = useState('')
   const [saveError, setSaveError] = useState('')
   const [fetchError, setFetchError] = useState('')
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
 
   const fetchCurrentPoll = async () => {
     setLoadingPoll(true)
@@ -39,9 +40,16 @@ function App() {
   const handleAdminLogin = async (event) => {
     event.preventDefault()
 
+    if (!adminId.trim() || !adminPassword) {
+      setLoginError('Please enter your admin ID and password.')
+      return
+    }
+
+    setIsLoggingIn(true)
+
     try {
       await api.post('/api/admin/login', {
-        id: adminId,
+        id: adminId.trim(),
         password: adminPassword,
       })
 
@@ -55,6 +63,8 @@ function App() {
       setLoginError(
         error?.response?.data?.message || 'Login failed. Please try again.'
       )
+    } finally {
+      setIsLoggingIn(false)
     }
   }
 
@@ -98,7 +108,7 @@ function App() {
         <div className="modal-overlay" role="dialog" aria-modal="true">
           <div className="modal-card">
             <h3>Admin Login</h3>
-            <p>Use the demo credentials 12345 / 12345.</p>
+            <p>Enter your admin credentials to access the dashboard.</p>
             <form onSubmit={handleAdminLogin} className="modal-form">
               <label className="field">
                 <span>ID</span>
@@ -114,11 +124,14 @@ function App() {
               </label>
               {loginError ? <p className="auth-error">{loginError}</p> : null}
               <div className="modal-actions">
-                <button type="submit" className="submit-btn">Login</button>
+                <button type="submit" className="submit-btn" disabled={isLoggingIn}>
+                  {isLoggingIn ? 'Logging in...' : 'Login'}
+                </button>
                 <button
                   type="button"
                   className="secondary-btn"
                   onClick={() => setShowAdminLogin(false)}
+                  disabled={isLoggingIn}
                 >
                   Cancel
                 </button>
