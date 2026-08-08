@@ -3,29 +3,23 @@ import PageShell from '../components/PageShell'
 import './AdminPage.css'
 
 function AdminPage({ onNavigate, poll, onSavePoll, onLogout, saveError }) {
-  const safePoll = poll || {
-    question: '',
-    status: 'active',
-    options: [],
-  }
-
-  const [question, setQuestion] = useState(safePoll.question)
-  const [status, setStatus] = useState(safePoll.status)
-  const [options, setOptions] = useState(safePoll.options)
+  const [question, setQuestion] = useState(poll?.question ?? '')
+  const [status, setStatus] = useState(poll?.status ?? 'active')
+  const [options, setOptions] = useState(Array.isArray(poll?.options) ? poll.options : [])
   const [draftOption, setDraftOption] = useState({ label: '', sub: '', icon: '👍' })
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    if (safePoll?.question !== undefined) {
-      setQuestion(safePoll.question)
+    if (poll) {
+      setQuestion(poll.question ?? '')
+      setStatus(poll.status ?? 'active')
+      setOptions(Array.isArray(poll.options) ? poll.options : [])
+    } else {
+      setQuestion('')
+      setStatus('active')
+      setOptions([])
     }
-    if (safePoll?.status) {
-      setStatus(safePoll.status)
-    }
-    if (Array.isArray(safePoll?.options)) {
-      setOptions(safePoll.options)
-    }
-  }, [safePoll?.question, safePoll?.status, safePoll?.options])
+  }, [poll])
 
   const handleAddOption = () => {
     if (!draftOption.label.trim()) {
@@ -71,7 +65,7 @@ function AdminPage({ onNavigate, poll, onSavePoll, onLogout, saveError }) {
     }))
 
     onSavePoll({
-      ...safePoll,
+      ...(poll || {}),
       question: question.trim(),
       status,
       options: normalizedOptions,
