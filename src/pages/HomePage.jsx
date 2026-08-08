@@ -3,6 +3,8 @@ import api from '../api'
 import PageShell from '../components/PageShell'
 import './HomePage.css'
 
+const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://ghanaspeaks.com'
+
 function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
   const [selected, setSelected] = useState(null)
   const [voted, setVoted] = useState(false)
@@ -126,6 +128,45 @@ function HomePage({ onNavigate, poll, refreshPoll, fetchError }) {
     const timeout = setTimeout(() => setShowSuccessModal(false), 4200)
     return () => clearTimeout(timeout)
   }, [showSuccessModal])
+
+  useEffect(() => {
+    if (!poll) return
+
+    const title = `${poll.question || 'Ghana Speaks Poll'} | Ghana Speaks`
+    const description = `View the latest poll results and vote on Ghana Speaks.`
+    const pollIdentifier = poll.pollId || poll._id || poll.id
+    const imageUrl = `${SITE_URL}/api/polls/${pollIdentifier}/share-image`
+
+    document.title = title
+
+    const metaTags = [
+      ['og:title', title],
+      ['og:description', description],
+      ['og:image', imageUrl],
+      ['og:url', `${SITE_URL}/poll/${pollIdentifier}`],
+      ['og:type', 'article'],
+      ['twitter:card', 'summary_large_image'],
+      ['twitter:title', title],
+      ['twitter:description', description],
+      ['twitter:image', imageUrl],
+    ]
+
+    metaTags.forEach(([property, content]) => {
+      let tag = document.querySelector(`meta[property="${property}"]`) || document.querySelector(`meta[name="${property}"]`)
+
+      if (!tag) {
+        tag = document.createElement('meta')
+        if (property.startsWith('og:') || property.startsWith('twitter:')) {
+          tag.setAttribute('property', property)
+        } else {
+          tag.setAttribute('name', property)
+        }
+        document.head.appendChild(tag)
+      }
+
+      tag.setAttribute('content', content)
+    })
+  }, [poll])
 
   const handleVote = async () => {
     if (!selected) {
